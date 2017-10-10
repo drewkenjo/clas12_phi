@@ -1,0 +1,6 @@
+import glob
+
+env = Environment();
+env.Append(JAVACFLAGS = ["-cp","/volatile/clas/clase1/markov/myClara/plugins/clas12/lib/clas/coat-libs-3.0-SNAPSHOT.jar"]);
+env.Java(".","src/com/FileManager.java");
+env.Java(".","phiAnalysis.java");
