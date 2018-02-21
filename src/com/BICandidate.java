@@ -9,4 +9,5 @@ interface BICandidate{
 
     public boolean candidate( DataEvent tempdevent, int index);
 
+
 }

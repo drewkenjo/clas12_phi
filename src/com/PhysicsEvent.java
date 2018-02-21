@@ -1,6 +1,7 @@
 package src.com;
 
 import java.io.*;
+import java.util.*;
 
 import src.com.PhysicalConstants;
 import org.jlab.clas.physics.Vector3;
@@ -93,43 +94,43 @@ public class PhysicsEvent {
     public static double mc_cm_theta;
 
 
-    public void testValue(){
-
-    }
+    public static List<Double> l_physev = new ArrayList<>();
+    public static List<Double> l_mcphysev = new ArrayList<>();
 
     public void clearPhysicsEvent(){
 	//System.out.println(">> CLEARING REC Physics Event ");
+	l_physev.clear();
+
+	lv_el.setPxPyPzE(0.0, 0.0, 0.0, 0.0);
+	lv_pr.setPxPyPzE(0.0, 0.0, 0.0, 0.0);
+	lv_kp.setPxPyPzE(0.0, 0.0, 0.0, 0.0);
+	lv_km.setPxPyPzE(0.0, 0.0, 0.0, 0.0);
+	lv_phi.setPxPyPzE(0.0, 0.0, 0.0, 0.0);
 	
-	 lv_el.setPxPyPzE(0.0, 0.0, 0.0, 0.0);
-	 lv_pr.setPxPyPzE(0.0, 0.0, 0.0, 0.0);
-	 lv_kp.setPxPyPzE(0.0, 0.0, 0.0, 0.0);
-	 lv_km.setPxPyPzE(0.0, 0.0, 0.0, 0.0);
-	 lv_phi.setPxPyPzE(0.0, 0.0, 0.0, 0.0);
-
-	 missing_kp.setPxPyPzE(0.0, 0.0, 0.0, 0.0);
-	 missing_km.setPxPyPzE(0.0, 0.0, 0.0, 0.0);
-	 missing_pr.setPxPyPzE(0.0, 0.0, 0.0, 0.0);
-
-	 lv_q.setPxPyPzE(0,0,0,0);
-	 lv_w.setPxPyPzE(0,0,0,0);
-	 lv_virtualphoton.setPxPyPzE(0,0,0,0);
-
-	 lv_CM.setPxPyPzE(0,0,0,0);
-	 lv_CM_target.setPxPyPzE(0,0,0,0);
-	 lv_CM_pr.setPxPyPzE(0,0,0,0);
-	 lv_CM_q.setPxPyPzE(0,0,0,0);
-	 lv_CM_kp.setPxPyPzE(0,0,0,0);
-	 lv_CM_km.setPxPyPzE(0,0,0,0);
-
-	 v_CM_boost.setXYZ(0,0,0);
-	 v_CM_phi.setXYZ(0,0,0);
+	missing_kp.setPxPyPzE(0.0, 0.0, 0.0, 0.0);
+	missing_km.setPxPyPzE(0.0, 0.0, 0.0, 0.0);
+	missing_pr.setPxPyPzE(0.0, 0.0, 0.0, 0.0);
 	
-	 q2 = 0.0;
-	 xB = 0.0;
-	 t = 0.0;
-	 w2 = 0.0;
-	 cm_phi = 0.0;
-	 cm_theta = 0.0;
+	lv_q.setPxPyPzE(0,0,0,0);
+	lv_w.setPxPyPzE(0,0,0,0);
+	lv_virtualphoton.setPxPyPzE(0,0,0,0);
+	
+	lv_CM.setPxPyPzE(0,0,0,0);
+	lv_CM_target.setPxPyPzE(0,0,0,0);
+	lv_CM_pr.setPxPyPzE(0,0,0,0);
+	lv_CM_q.setPxPyPzE(0,0,0,0);
+	lv_CM_kp.setPxPyPzE(0,0,0,0);
+	lv_CM_km.setPxPyPzE(0,0,0,0);
+	
+	v_CM_boost.setXYZ(0,0,0);
+	v_CM_phi.setXYZ(0,0,0);
+	
+	q2 = 0.0;
+	xB = 0.0;
+	t = 0.0;
+	w2 = 0.0;
+	cm_phi = 0.0;
+	cm_theta = 0.0;
     }
 	 //////////////////////////////////////////////
 	 //
@@ -140,6 +141,7 @@ public class PhysicsEvent {
 
     public void clearMCPhysicsEvent(){
 	//System.out.println(">> CLEARING MC Physics Event ");
+	l_mcphysev.clear();
 
 	 mc_lv_el.setPxPyPzE(0.0, 0.0, 0.0, 0.0);
 	 mc_lv_pr.setPxPyPzE(0.0, 0.0, 0.0, 0.0);

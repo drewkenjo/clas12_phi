@@ -63,6 +63,14 @@ public class BEvent {
     float rc_km_vy;
     float rc_km_vz;
 
+    public static int golden_electron_index;
+    public static int golden_proton_index;
+    public static int golden_kp_index;
+    public static int golden_km_index;
+
+    public static double total_accumulatedcharge; 
+	
+
     public void setEvent( DataEvent event ){
 
 	//System.out.println("CREATING EVENT");
@@ -106,6 +114,48 @@ public class BEvent {
 	//recBank.show();
 	
 
-    } 
-			 
+    }
+
+    public void SetGoldenIndices( int tempel, int temppr, int tempkp, int tempkm ){
+	SetElectronGoldenIndex(tempel);
+	SetProtonGoldenIndex(temppr);
+	SetKaonPlusGoldenIndex(tempkp);
+	SetKaonMinusGoldenIndex(tempkm);
+    }
+   public void SetElectronGoldenIndex( int temp_el ){
+	golden_electron_index = temp_el;
+    }
+
+   public  void SetProtonGoldenIndex( int temp_pr ){
+	golden_proton_index = temp_pr;
+    }
+
+    public void SetKaonPlusGoldenIndex( int temp_kp ){
+	golden_kp_index = temp_kp;
+    }
+
+   public  void SetKaonMinusGoldenIndex( int temp_km ){
+	golden_km_index = temp_km;
+    }
+
+    public void setAccumulatedCharge( double temp_acharge ){
+	total_accumulatedcharge = temp_acharge;
+    }
+
+    public static int GetElGoldenIndex(){
+	return golden_electron_index;
+    }
+    public static int GetPrGoldenIndex(){
+	return golden_proton_index;
+    }
+    public static int GetKPGoldenIndex(){
+	return golden_kp_index;
+    }
+    public static int GetKMGoldenIndex(){
+	return golden_km_index;
+    }
+
+    public static double getAccumulatedCharge(){
+	return total_accumulatedcharge;
+    }
 }

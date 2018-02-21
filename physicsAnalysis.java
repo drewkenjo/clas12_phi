@@ -39,7 +39,7 @@ public class physicsAnalysis{
 
 	HipoDataSource reader = new HipoDataSource();
 	int f_counter = 0;
-	int max_files = 50;
+	int max_files = 30;
 
 	/////////////////////////////////////
 	//HISTOGRAMS
@@ -82,7 +82,7 @@ public class physicsAnalysis{
 		try{
 		DataEvent event = reader.gotoEvent(n);//getNextEvent();
 
-		boolean phyevent_present = event.hasBank("PhysicsEvent");
+		/*boolean phyevent_present = event.hasBank("PhysicsEvent");
 		if( phyevent_present ){
 		    DataBank phyevent = event.getBank("PhysicsEvent");
 
@@ -102,14 +102,13 @@ public class physicsAnalysis{
 		    else if( min_b4 < t ){
 			h_tb4_cos.fill(cos_theta);
 		    }
-		}
+		    }*/
 		}
 		catch( Exception e){
 		    //throw e;
 		    System.out.println(">>EXCEPTION WAS THROWN");
 		    //continue;
 		}
-
 
 	    }
 	    

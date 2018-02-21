@@ -85,17 +85,20 @@ public class PhysicsBuilder {
     int mc_kp_index = 2;
     int mc_km_index = 3;
 
-    public PhysicsEvent setPhysicsEvent( DataEvent tempevent, int el_index, int pr_index, int kp_index, int km_index, int eventtopology ){
+    public PhysicsEvent setPhysicsEvent( boolean goodevent, DataEvent tempevent, int el_index, int pr_index, int kp_index, int km_index, int eventtopology ){
 	
 	//System.out.println(" >> " + el_index + " " + pr_index + " " + kp_index + " " + km_index );
 	physev.clearPhysicsEvent();
 	setEventProperties( eventtopology );
+
+	if( goodevent ){
 	setElectronKinematics( tempevent, el_index );
 	setProtonKinematics( tempevent, pr_index );
 	setKaonKinematics( tempevent, kp_index, km_index );
 	setMissingLorentzVectors();
 
-	setPhysicsKinematics();
+	}
+	setPhysicsKinematics(goodevent);
 
 	return new PhysicsEvent();
     }
@@ -116,7 +119,8 @@ public class PhysicsBuilder {
 
     public void setEventProperties( int tempeventtopology ){
 	physev.topology = tempeventtopology;
-	
+	physev.l_physev.add((double)tempeventtopology);
+		
     }
 
     public void setMCEventProperties(){
@@ -337,20 +341,23 @@ public class PhysicsBuilder {
 	
     }
 
-    public void setPhysicsKinematics(){
+    public void setPhysicsKinematics( boolean good_event ){
 	//System.out.println(">> " + lv_q.px() + " " + lv_w.px() + " " + lv_t.px() );
+	if( good_event){
 	lv_q.add(lv_beam);
 	lv_q.sub(lv_el);
+	//System.out.println(" >> Q2 elements " + lv_beam.e() + " " + lv_el.px() + " " + lv_el.py() + " " + lv_el.pz() );
 	physev.lv_q = lv_q;
-
+	
 	lv_w.add(lv_el);
 	lv_w.sub(lv_beam);
 	lv_w.sub(lv_pr);
 	lv_w.sub(target);
 	physev.lv_w = lv_w;
-
+	
 	q2 = lv_q.mass2();
 	physev.q2 = q2;
+	//System.out.println(" >> q2 " + q2 );
 	xB = (-lv_q.mass2()) / (2*PhysicalConstants.mass_proton*(PhysicalConstants.eBeam - lv_el.e() ));
 	physev.xB = xB;
 
@@ -359,11 +366,12 @@ public class PhysicsBuilder {
 
 	lv_t.add(target);
 	lv_t.sub(lv_pr);
-	//t = 2.0*PhysicalConstants.mass_proton*(lv_pr.e() - PhysicalConstants.mass_proton);
-	t = lv_t.mass();
+	t = 2.0*PhysicalConstants.mass_proton*(lv_pr.e() - PhysicalConstants.mass_proton);
+	//System.out.println(">> t " + t );
+	//t = lv_t.mass();
 	physev.t = t;
 
-	w2 = lv_w.mass2();
+	w2 = Calculator.W( lv_el );//Math.sqrt( lv_w.mass2() );
 	physev.w2 = w2;
 
 	lv_CM.add(lv_q);
@@ -406,13 +414,63 @@ public class PhysicsBuilder {
 	cm_theta = Math.cos(lv_CM_kp.theta());
  	physev.cm_theta = cm_theta;
 
+	
+ 	physev.l_physev.add(q2);
+	physev.l_physev.add(xB);
+	physev.l_physev.add(t);
+	physev.l_physev.add(w2);
+
+	physev.l_physev.add(cm_theta);
+	physev.l_physev.add(cm_phi);
+
+	physev.l_physev.add(lv_el.mass());
+	physev.l_physev.add(lv_el.theta());
+	physev.l_physev.add(lv_el.phi());
+
+	physev.l_physev.add(lv_pr.mass());
+	physev.l_physev.add(lv_pr.theta());
+	physev.l_physev.add(lv_pr.phi());
+
+	physev.l_physev.add(lv_kp.mass());
+	physev.l_physev.add(lv_kp.theta());
+	physev.l_physev.add(lv_kp.phi());
+
+	physev.l_physev.add(lv_km.mass());
+	physev.l_physev.add(lv_km.theta());
+	physev.l_physev.add(lv_km.phi());
+	}
+	else{
+	double no_event_value = 0.0;
+ 	physev.l_physev.add(no_event_value);
+	physev.l_physev.add(no_event_value);
+	physev.l_physev.add(no_event_value);
+	physev.l_physev.add(no_event_value);
+
+	physev.l_physev.add(no_event_value);
+	physev.l_physev.add(no_event_value);
+
+	physev.l_physev.add(no_event_value);
+	physev.l_physev.add(no_event_value);
+	physev.l_physev.add(no_event_value);
+
+	physev.l_physev.add(no_event_value);
+	physev.l_physev.add(no_event_value);
+	physev.l_physev.add(no_event_value);
+
+	physev.l_physev.add(no_event_value);
+	physev.l_physev.add(no_event_value);
+	physev.l_physev.add(no_event_value);
+
+	physev.l_physev.add(no_event_value);
+	physev.l_physev.add(no_event_value);
+	physev.l_physev.add(no_event_value);
+	}
 	//System.out.println(">> AFTER  " + lv_q.px() + " " + lv_w.px() + " " + lv_t.px() );
 	
 	//System.out.println(" >> " + lv_CM_kp.px() + " " + lv_CM_kp.py() + " " + lv_CM_kp.pz() );
 	//System.out.println(cm_phi + " " + cm_theta);
 
 	//System.out.println(">> " + lv_q.e() + " " + xB + " " + t + " " + w2 );
-
     }
 
     public void setThetaCM(){
@@ -424,7 +482,6 @@ public class PhysicsBuilder {
 	mc_lv_q.add(lv_beam);
 	mc_lv_q.sub(mc_lv_el);
 	physev.mc_lv_q = mc_lv_q;
-
 	mc_lv_w.add(mc_lv_el);
 	mc_lv_w.sub(lv_beam);
 	mc_lv_w.sub(mc_lv_pr);
@@ -435,18 +492,26 @@ public class PhysicsBuilder {
 	physev.mc_q2 = mc_q2;
 	mc_xB = (-mc_lv_q.mass2()) / (2*PhysicalConstants.mass_proton*(PhysicalConstants.eBeam - mc_lv_el.e() ));
 	physev.mc_xB = mc_xB;
+	physev.l_mcphysev.add(mc_q2);
+	physev.l_mcphysev.add(mc_xB);
+	//System.out.println(" >> mc_q2 " + mc_q2 );
 
 	//mc_lv_pr.sub(target);
 	//physev.mc_lv_pr = mc_lv_pr;
 
 	mc_lv_t.add(target);
 	mc_lv_t.sub(mc_lv_pr);
-	physev.mc_t = mc_lv_t.mass();
-	//mc_t = 2*PhysicalConstants.mass_proton*(mc_lv_pr.e() - PhysicalConstants.mass_proton);
-	//physev.mc_t = mc_t;
+	//	physev.mc_t = mc_lv_t.mass2());
+	mc_t = 2.0*PhysicalConstants.mass_proton*(mc_lv_pr.e() - PhysicalConstants.mass_proton);
+	physev.mc_t = mc_t;
+	//System.out.println(" >> mc_t " + mc_t );
 
-	mc_w2 = mc_lv_w.mass2();
-	physev.mc_w2 = mc_w2;
+	physev.l_mcphysev.add(physev.mc_t);
+
+	mc_w2 = Calculator.W(mc_lv_el);//Math.sqrt(mc_lv_w.mass2());
+	physev.mc_w2 = Calculator.W(mc_lv_el); //mc_w2;
+	physev.l_mcphysev.add(mc_w2);
+	//System.out.println(" >> in PB " + mc_w2 );
 
 	mc_lv_CM.add(mc_lv_q);
 	mc_lv_CM.add(target);
@@ -487,7 +552,26 @@ public class PhysicsBuilder {
 	physev.mc_cm_phi = mc_cm_phi;
 	mc_cm_theta = Math.cos(mc_lv_CM_kp.theta());
  	physev.mc_cm_theta = mc_cm_theta;
+	physev.l_mcphysev.add(mc_cm_theta);
+	physev.l_mcphysev.add(mc_cm_phi);
 	
+	physev.l_mcphysev.add(mc_lv_el.mass());
+	physev.l_mcphysev.add(mc_lv_el.theta());
+	physev.l_mcphysev.add(mc_lv_el.phi());
+
+	physev.l_mcphysev.add(mc_lv_pr.mass());
+	physev.l_mcphysev.add(mc_lv_pr.theta());
+	physev.l_mcphysev.add(mc_lv_pr.phi());
+
+	physev.l_mcphysev.add(mc_lv_kp.mass());
+	physev.l_mcphysev.add(mc_lv_kp.theta());
+	physev.l_mcphysev.add(mc_lv_kp.phi());
+
+	physev.l_mcphysev.add(mc_lv_km.mass());
+	physev.l_mcphysev.add(mc_lv_km.theta());
+	physev.l_mcphysev.add(mc_lv_km.phi());
+
+
  
     }
 

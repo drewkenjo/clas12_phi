@@ -6,13 +6,14 @@ import java.io.*;
 import org.jlab.io.base.DataEvent;
 import org.jlab.io.base.DataBank;
 
-class MatchProtonPhi implements BICandidate2 {
+class MatchProtonPhi implements BICandidate {
 
-    public boolean candidate2( DataEvent tempdevent, int index, int rec_i ){
+    public boolean candidate( DataEvent tempdevent, int rec_i ){
 
 	DataBank recdbank = tempdevent.getBank("REC::Particle");
 	DataBank gendbank = tempdevent.getBank("MC::Particle");
 
+	int index = PhysicalConstants.pr_index;
 	float gen_px = gendbank.getFloat("px",index);
 	float gen_py = gendbank.getFloat("py",index);
 	float gen_pz = gendbank.getFloat("pz",index);

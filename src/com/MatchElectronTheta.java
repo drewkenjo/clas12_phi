@@ -7,12 +7,13 @@ import org.jlab.io.base.DataEvent;
 import org.jlab.io.base.DataBank;
 
 
-class MatchElectronTheta implements BICandidate2 {
+class MatchElectronTheta implements BICandidate {
 
-    public boolean candidate2( DataEvent tempdevent, int index, int rec_i ){
+    public boolean candidate( DataEvent tempdevent, int rec_i ){
 
 	DataBank recbank = tempdevent.getBank("REC::Particle");
 	DataBank genbank = tempdevent.getBank("MC::Particle");
+	int index = PhysicalConstants.el_index;
 
 	float gen_px = genbank.getFloat("px",index);
 	float gen_py = genbank.getFloat("py",index);

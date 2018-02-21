@@ -4,9 +4,9 @@ import java.io.*;
 import org.jlab.io.base.DataEvent;
 import org.jlab.io.base.DataBank;
 
-class MatchKaonPlusPID implements BICandidate2 {
+class MatchKaonPlusPID implements BICandidate {
 
-    public boolean candidate2( DataEvent tempdevent, int index, int rec_i ){
+    public boolean candidate( DataEvent tempdevent, int rec_i ){
 	//System.out.println("Applying KP Charge Cuts" );
 
 	DataBank recdbank = tempdevent.getBank("REC::Particle");

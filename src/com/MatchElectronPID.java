@@ -5,9 +5,9 @@ import java.io.*;
 import org.jlab.io.base.DataEvent;
 import org.jlab.io.base.DataBank;
 
-public class MatchElectronPID implements BICandidate2 {
+public class MatchElectronPID implements BICandidate {
 
-    public boolean candidate2(DataEvent tempdevent, int index, int rec_i){
+    public boolean candidate(DataEvent tempdevent, int rec_i){
 	//System.out.println("Applying Charge Cuts" );
 
 	DataBank recdbank = tempdevent.getBank("REC::Particle");

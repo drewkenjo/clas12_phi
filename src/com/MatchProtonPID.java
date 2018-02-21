@@ -6,9 +6,9 @@ import java.io.*;
 import org.jlab.io.base.DataEvent;
 import org.jlab.io.base.DataBank;
 
-class MatchProtonPID implements BICandidate2 {
+class MatchProtonPID implements BICandidate {
 
-    public boolean candidate2( DataEvent tempdevent, int index, int rec_i ){
+    public boolean candidate( DataEvent tempdevent, int rec_i ){
 
 	DataBank recdbank = tempdevent.getBank("REC::Particle");
 
