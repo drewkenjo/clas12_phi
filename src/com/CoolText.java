@@ -46,6 +46,12 @@ public class CoolText {
 	else if( tempcolor == "green" ){
 	    color_choice = ANSI_GREEN;
 	}
+	else if( tempcolor == "blue" ){
+	    color_choice = ANSI_BLUE;
+	}
+	else if( tempcolor == "white" ){
+	    color_choice = ANSI_WHITE;
+	}
 	else{
 	    System.out.println(">> PLEASE ENTER A LISTED COLOR ");
 	    color_choice = ANSI_BLACK;

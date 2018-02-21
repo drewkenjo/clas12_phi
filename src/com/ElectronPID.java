@@ -8,8 +8,11 @@ import src.com.PCALHitCut;
 import src.com.PhotoElectronCut;
 import src.com.SectorMatchCut;
 import src.com.DCFiducialCut;
+import src.com.DCFiducialR2Cut;
+import src.com.DCFiducialR3Cut;
 import src.com.ECALInnerOuterCut;
 import src.com.PCALFiducialCut;
+
 
 import org.jlab.io.base.DataEvent;
 import org.jlab.io.base.DataBank;
@@ -32,9 +35,10 @@ public class ElectronPID implements IParticleIdentifier{
     PCALHitCut pcalhit_cut = new PCALHitCut();
     PhotoElectronCut nphe_cut = new PhotoElectronCut();
     SectorMatchCut sectormatch_cut = new SectorMatchCut();
-    ECFiducialCut ecei_fiducial_cut = new ECFiducialCut(); //check if it is ei or eo!
-    DCFiducialCut dc_fiducial_cut = new DCFiducialCut();
     ECALInnerOuterCut ec_eieo_cut = new ECALInnerOuterCut();
+    DCFiducialCut dcr1_fiducial_cut = new DCFiducialCut();
+    DCFiducialR2Cut dcr2_fiducial_cut = new DCFiducialR2Cut();
+    DCFiducialR3Cut dcr3_fiducial_cut = new DCFiducialR3Cut();
     PCALFiducialCut pcal_fiducial_cut = new PCALFiducialCut();
 
     SchemaFactory factory;
@@ -49,12 +53,17 @@ public class ElectronPID implements IParticleIdentifier{
 
 	v_cuts.add(charge_cut);
 	v_cuts.add(sectormatch_cut);
+	//////////////
+	//ENERGY CUTS
 	v_cuts.add(ecsf_cut);	
 	v_cuts.add(ec_eieo_cut);
-	v_cuts.add(dc_fiducial_cut);
-	//v_cuts.add(ecei_fiducial_cut);
-	v_cuts.add(pcal_fiducial_cut);
 	v_cuts.add(pcalhit_cut);
+	/////////////
+	//FID CUTS
+	v_cuts.add(pcal_fiducial_cut);
+	v_cuts.add(dcr1_fiducial_cut);
+	v_cuts.add(dcr2_fiducial_cut);
+	v_cuts.add(dcr3_fiducial_cut);
 
     }
 

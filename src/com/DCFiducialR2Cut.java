@@ -31,10 +31,10 @@ public class DCFiducialR2Cut implements BICandidate{
 		double x_local = dc_r2_locxy.get(0);
 		double y_local = dc_r2_locxy.get(1);
 	    
-		boolean d_up = y_local > 0.459*x_local + 69.0;
+		boolean d_up = y_local < 0.459*x_local + 69.0;
 		boolean d_bottom = y_local > -0.460*x_local - 68.0;
 		boolean d_left = x_local > -112.0;
-		boolea d_right = x_local < 80.0;
+		boolean d_right = x_local < 80.0;
 		
 		if( d_up && d_bottom && d_left && d_right ){
 		    return true;

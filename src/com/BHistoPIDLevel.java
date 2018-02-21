@@ -52,14 +52,14 @@ public class BHistoPIDLevel {
 	
 	h_bpid.createElectronHistoToHipoOut(0);
 
-	for( int i = 0; i <= 6; i++ ){
+	for( int i = 0; i <= 8; i++ ){ //THIS NUMBER SHOULD NOT BE HARD CODED :o // REPRESENTS NUMBER OF CUTS
 	    h_bpid.createElectronHistograms(i);
 	    h_bprotonpid.createProtonHistograms(i);
 	    h_bkppid.createKaonPHistograms(i);
 	}
 
 	for( int j = 0; j <= 6; j++ ){
-	    h_bpid.createElectronSectorHistograms(j,6);
+	    h_bpid.createElectronSectorHistograms(j,8);
 	    h_bprotonpid.createProtonSectorHistograms(j,4);
 	    h_bkppid.createKaonPSectorHistograms(j,3);
 	}
@@ -164,7 +164,7 @@ public class BHistoPIDLevel {
 		    }
 		}
 
-  		/*
+  		
 		if( event.hasBank("REC::Track") && event.hasBank("TimeBasedTrkg::TBCrosses") && event.hasBank("TimeBasedTrkg::TBTracks") ){
 		    int dc_sector_r1 = Detectors.getDCSectorR1(event, rec_i) - 1;
 		    double dc_x1 = Detectors.getDCCrossX1(event, rec_i);
@@ -199,7 +199,7 @@ public class BHistoPIDLevel {
 		    }
 		   
 		}
-		*/
+		
 		
 		
 		Map<Integer,ArrayList<Double>> m_ecal_uvw = Calculator.xyzToUVW(event, rec_i);

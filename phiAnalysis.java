@@ -102,7 +102,7 @@ public class phiAnalysis{
 	    f_type = "clas12_";
 	}
 
-	int max_files = 1;
+	int max_files = 50;
 	int count = 0;
 
 
@@ -231,6 +231,7 @@ public class phiAnalysis{
 	    reader.open(in_file);
 	    int counter = 0;
 	    DataEvent nullevent = reader.getNextEvent();
+	    coolprint.printToScreen(">> BEGINNING EVENT LOOP NOW:","blue");
 	    while( reader.hasEvent() ){
 		DataEvent event = reader.getNextEvent();
 		
@@ -331,8 +332,8 @@ public class phiAnalysis{
 			//System.out.println(">> j " + j + ", k " + k ); 
 			//LOOK AT EFFECT OF EACH CUT ON DATA			
 			
-			//v_el_tests = find_el.processCutsVector(event, k);
-			//h_pid_cutlvls.FillElectronPID( v_el_tests, event, k );
+			v_el_tests = find_el.processCutsVector(event, k);
+			h_pid_cutlvls.FillElectronPID( v_el_tests, event, k );
 			
 			
 			int clas12pid = event.getBank("REC::Particle").getInt("pid",k);

@@ -31,10 +31,10 @@ public class DCFiducialCut implements BICandidate{
 		double x_local = dc_r1_locxy.get(0);
 		double y_local = dc_r1_locxy.get(1);
 	    
-		boolean d_up = y_local > 0.428*x_local + 40.0;
+		boolean d_up = y_local < 0.428*x_local + 40.0;
 		boolean d_bottom = y_local > -0.456*x_local -43.0;
 		boolean d_left = x_local > -73.0;
-		boolea d_right = x_local < 50.0;
+		boolean d_right = x_local < 50.0;
 		
 		if( d_up && d_bottom && d_left && d_right ){
 		    return true;
