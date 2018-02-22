@@ -127,7 +127,7 @@ public class BHistoPIDLevel {
 		}
 		
 		double e_ecal = e_ecal_ei + e_ecal_eo;
-		h_bpid.h2_el_pcalecal.get(j).fill(e_ecal, e_pcal ); 
+		h_bpid.h2_el_pcalecal.get(j).fill(e_pcal, e_ecal ); 
 
 		h_bpid.h_el_p.get(j).fill( p );
 		h_bpid.h_el_theta.get(j).fill( theta );
@@ -256,7 +256,7 @@ public class BHistoPIDLevel {
 		    //h_bpid.h2_el_sect_pcalp.get(sector_ec).get(j).fill(p, e_pcal/p);
 		    h_bpid.h2_el_sect_eieo.get(sector_ec).get(j).fill(e_ecal_ei, e_ecal_eo);
 
- 		    h_bpid.h2_el_sect_pcalecal.get(sector_ec).get(j).fill(e_ecal, e_pcal);  
+ 		    h_bpid.h2_el_sect_pcalecal.get(sector_ec).get(j).fill(e_pcal, e_ecal);  
 		}
 		
 		if( sector_pcal >= 0 ){

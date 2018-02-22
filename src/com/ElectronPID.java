@@ -56,7 +56,7 @@ public class ElectronPID implements IParticleIdentifier{
 	//////////////
 	//ENERGY CUTS
 	v_cuts.add(ecsf_cut);	
-	v_cuts.add(ec_eieo_cut);
+	//v_cuts.add(ec_eieo_cut);
 	v_cuts.add(pcalhit_cut);
 	/////////////
 	//FID CUTS

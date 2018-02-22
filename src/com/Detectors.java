@@ -110,7 +110,7 @@ public class Detectors {
     }
 
 
-    public static int getSectorDC( DataEvent tempevent, int temp_pindex ){
+    public static int getSectorDC( DataEvent tempevent, int temp_pindex ){ //WTF DID I TYPE HERE CHANGE NAME TO SCINT
 	int sector = -1;
 	if( tempevent.hasBank("REC::Scintillator") ){
 	    DataBank  scintBank = tempevent.getBank("REC::Scintillator");

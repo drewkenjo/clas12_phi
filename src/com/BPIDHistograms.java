@@ -755,8 +755,8 @@ public class BPIDHistograms {
  	dir.cd("/cutlvls/h_el_sect_acnorm_w");              			
 	for( int i = 0; i < h_el_sect_w.size(); i++ ){
 	    EmbeddedCanvas c_w = new EmbeddedCanvas();
-	    c_w.setSize(800,800);
-	    c_w.divide(2,3);
+	    c_w.setSize(900,900);
+	    c_w.divide(2,4);
 	    Vector<H1F> v_temp = h_el_sect_w.get(i);       
 	    for( int j = 0; j < v_temp.size(); j++){	
 		c_w.cd(j);
@@ -1178,8 +1178,8 @@ public class BPIDHistograms {
 	    for( int j = 0; j < v_temp.size(); j++){
 		EmbeddedCanvas c_temp = new EmbeddedCanvas();
 		c_temp.setSize(800,800);
-		v_temp.get(j).setTitleX("ECAL [GeV]");
-		v_temp.get(j).setTitleY("PCAL [GeV]");		
+		v_temp.get(j).setTitleX("PCAL [GeV]");
+		v_temp.get(j).setTitleY("ECAL [GeV]");		
 		c_temp.draw(v_temp.get(j),"colz");
 		c_temp.save("/lustre/expphy/work/hallb/clas12/bclary/pics/pid_clary/"+v_temp.get(j).getTitle()+".png");
 	    }

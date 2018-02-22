@@ -29,7 +29,7 @@ class PCALHitCut implements BICandidate {
 		
 	    }
 
-	    if( edep_tot >= 0.1 ){
+	    if( edep_tot >= 0.07 ){
 		//System.out.println(" >> PCAL ENERGY DEP IS " + edep_tot );
 		return true;
 	    }

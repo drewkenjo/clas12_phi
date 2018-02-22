@@ -433,7 +433,7 @@ public class Calculator{
 	if(event.hasBank("RAW::scaler")){
 	    DataBank rawScaler = event.getBank("RAW::scaler");
 	    for(int k=0;k<rawScaler.rows(); k++){
-		if(rawScaler.getInt("channel",k)==0 && rawScaler.getInt("slot",k)==0){
+		if(rawScaler.getInt("channel",k)==32 && rawScaler.getInt("slot",k)==0){ //1 for ungated 
 		    int FCscaler = rawScaler.getInt("value",k);
 		    // 30 Hz minus 0.5 ms dead for Helicity
 		    double trueFreq = FCscaler / (0.03333 - 0.0005);
