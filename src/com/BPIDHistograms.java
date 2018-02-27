@@ -1053,29 +1053,36 @@ public class BPIDHistograms {
 		//System.out.println(" >> " + g_mean2.getDataX(b) + " " + g_mean2.getDataY(b) );
 	    }
 	    
-	    F1D f_sf_mean2 = new F1D("f_sf_mean2","[a]*x*x*x + [b]*x*x + [c]*x + [d]", 0.8, 6.1);                                                                                                        
+	    //F1D f_sf_mean2 = new F1D("f_sf_mean2","[a]*x*x*x + [b]*x*x + [c]*x + [d]", 0.8, 6.1);                                                                                                        
+	    F1D f_sf_mean2 = new F1D("f_sf_mean2","[a] + [b]/(x-0.1)", 0.8, 6.1);                                                                                                        
 	    DataFitter.fit(f_sf_mean2, g_mean2,"REQ");
 
-	    F1D f_sf_top = new F1D("f_sf_top","[a]*x*x*x + [b]*x*x + [c]*x + [d]",0.8, 6.1);
+	    F1D f_sf_top = new F1D("f_sf_top","[a] + [b]/x + [c]/(x*x)", 0.8, 6.1);
 	    DataFitter.fit(f_sf_top, g_plus,"REQ");
 
-	    F1D f_sf_bot = new F1D("f_sf_bot","[a]*x*x*x + [b]*x*x + [c]*x + [d]",0.8, 6.1);	    
+	    F1D f_sf_bot = new F1D("f_sf_bot","[a] + [b]/x + [c]/(x*x)", 0.8, 6.1);	    
 	    DataFitter.fit(f_sf_bot, g_minus,"REQ");
+
+	    //F1D f_sf_top = new F1D("f_sf_top","[a]*x*x*x + [b]*x*x + [c]*x + [d]", 0.8, 6.1);
+	    //DataFitter.fit(f_sf_top, g_plus,"REQ");
+
+	    //F1D f_sf_bot = new F1D("f_sf_bot","[a]*x*x*x + [b]*x*x + [c]*x + [d]", 0.8, 6.1);	    
+	    //DataFitter.fit(f_sf_bot, g_minus,"REQ");
 
 	    Double ma = f_sf_mean2.getParameter(0);
 	    Double mb = f_sf_mean2.getParameter(1);
-	    Double mc = f_sf_mean2.getParameter(2);
-	    Double md = f_sf_mean2.getParameter(3);
+	    Double mc = 0.0;//f_sf_mean2.getParameter(2);
+	    Double md = 0.0;//f_sf_mean2.getParameter(3);
 	    
 	    Double topa = f_sf_top.getParameter(0);
 	    Double topb = f_sf_top.getParameter(1);
 	    Double topc = f_sf_top.getParameter(2);
-	    Double topd = f_sf_top.getParameter(3);
+	    Double topd = 0.0;//f_sf_top.getParameter(3);
 	    
 	    Double bota = f_sf_bot.getParameter(0);
 	    Double botb = f_sf_bot.getParameter(1);
 	    Double botc = f_sf_bot.getParameter(2);
-	    Double botd = f_sf_bot.getParameter(3);
+	    Double botd =  0.0;//f_sf_bot.getParameter(3);
 
 
 	    try{

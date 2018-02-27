@@ -43,12 +43,20 @@ public class BPIDProtonHistograms {
     double min_rpath = 300.0; double max_rpath = 750.0; 
     double min_tof = 15.0; double max_tof = 35.0;
 
+    double min_dc_minlx = -150.0; double max_dc_maxlx = 150.0;
+    double min_dc_minly = -300.0; double max_dc_maxly = 300.0;
+    double min_dc_mingx = -400.0; double max_dc_maxgx = 400.0;
+    double min_dc_mingy = -400.0; double max_dc_maxgy = 400.0;
+
     Vector<H1F> h_pr_p = new Vector<H1F>(); 
     Vector<H1F> h_pr_theta = new Vector<H1F>(); 
     Vector<H1F> h_pr_phi = new Vector<H1F>(); 
     Vector<H1F> h_pr_vz = new Vector<H1F>(); 
     Vector<H1F> h_pr_timing = new Vector<H1F>(); 
+    Vector<H1F> h_pr_masstime = new Vector<H1F>();
 
+    Vector<H2F> h2_pr_masstimep = new Vector<H2F>();
+    Vector<H2F> h2_pr_vzphi = new Vector< H2F >();
     Vector<H2F> h2_pr_deltimep = new Vector<H2F>(); 
     Vector<H2F> h2_pr_deltabeta = new Vector<H2F>();
     Vector<H2F> h2_pr_betap = new Vector<H2F>();
@@ -58,19 +66,41 @@ public class BPIDProtonHistograms {
     Vector<H1F> h_pr_beta_time = new Vector<H1F>();
     Vector<H1F> h_pr_beta_mntm = new Vector<H1F>();
 
+    Vector<H2F> h2_pr_dchit_R1_xy = new Vector<H2F>();
+    Vector<H2F> h2_pr_dchit_R2_xy = new Vector<H2F>();
+    Vector<H2F> h2_pr_dchit_R3_xy = new Vector<H2F>();
+
+    Vector<H2F> h2_pr_dchit_R1_gxy = new Vector<H2F>();
+    Vector<H2F> h2_pr_dchit_R2_gxy = new Vector<H2F>();
+    Vector<H2F> h2_pr_dchit_R3_gxy = new Vector<H2F>();
+
+    Vector<H2F> h2_pr_ectotp = new Vector<H2F>();
+    Vector<H1F> h_pr_pcal_e = new Vector<H1F>();
+    Vector<H1F> h_pr_eical_e = new Vector<H1F>();
+    Vector<H1F> h_pr_eocal_e = new Vector<H1F>();
+    
     Vector<Vector<H1F>> h_pr_sect_p = new Vector< Vector<H1F> >();
     Vector<Vector<H1F>> h_pr_sect_theta = new Vector< Vector<H1F> >();
     Vector<Vector<H1F>> h_pr_sect_phi = new Vector< Vector<H1F> >();
+    Vector<Vector<H1F>> h_pr_sect_masstime = new Vector<Vector<H1F> >();
+
+    Vector<Vector<H2F>> h2_pr_sect_ectotp = new Vector<Vector<H2F> >();
+    Vector<Vector<H1F>> h_pr_sect_pcal_e = new Vector<Vector<H1F> >();
+    Vector<Vector<H1F>> h_pr_sect_eical_e = new Vector<Vector<H1F> >();
+    Vector<Vector<H1F>> h_pr_sect_eocal_e = new Vector<Vector<H1F> >();
 
     Vector<Vector<H2F>> h2_pr_sect_betap = new Vector< Vector<H2F> >();
     Vector<Vector<H2F>> h2_pr_sect_deltabeta = new Vector<Vector<H2F> >();
-    Vector<Vector<H2F>> h2_pr_sect_deltimep = new Vector<Vector<H2F> >();
+    Vector<Vector<H2F>> h2_pr_sect_deltimep = new Vector<Vector<H2F> >();    
+    Vector<Vector<H2F>> h2_pr_sect_vztheta = new Vector< Vector<H2F> >();
+    Vector<Vector<H2F>> h2_pr_sect_masstimep = new Vector<Vector<H2F> >();
+
     
+
     Vector<Vector<H2F>> h_pr_sect_panel_deltp = new Vector< Vector<H2F> >();   
     Vector< Vector< Vector< H2F > > > h_pr_sect_panel_deltimep = new Vector< Vector< Vector<H2F> > >(); 
 
     HashMap<Integer, Vector< Vector<H2F> > > m_pr_sect_panel_deltp = new HashMap<Integer, Vector< Vector< H2F> > >();
-
 
     public void createProtonHistograms(int i){
 
@@ -88,21 +118,49 @@ public class BPIDProtonHistograms {
 	h2_pr_betap.add( new H2F("h2_"+s_run_number+"_pr_betap_cutlvl"+Integer.toString(i),"h2_"+s_run_number+"_pr_betap_cutlvl"+Integer.toString(i),100, min_p, max_p, 100, min_b, max_b ));
 	h2_pr_deltabeta.add( new H2F("h2_"+s_run_number+"_pr_deltabeta_cutlvl"+Integer.toString(i),"h2_"+s_run_number+"_pr_deltabeta_cutlvl"+Integer.toString(i),100, min_p, max_p, 100, min_delb, max_delb ));
 
+	h2_pr_vzphi.add( new H2F("h2_"+s_run_number+"_pr_vzphi_cutlvl"+Integer.toString(i),"h2_"+s_run_number+"_pr_vzphi_cutlvl"+Integer.toString(i), 200, min_vz, max_vz, 200, min_phi, max_phi ));
+ 	h2_pr_dchit_R1_xy.add( new H2F("h2_"+s_run_number+"_pr_dchit_R1_cutlvl"+Integer.toString(i),"h2_"+s_run_number+"_pr_dchit_R1_cutlvl"+Integer.toString(i), 500, -95.0, 95.0, 500, -100.0, 100.0 ));
+ 	h2_pr_dchit_R2_xy.add( new H2F("h2_"+s_run_number+"_pr_dchit_R2_cutlvl"+Integer.toString(i),"h2_"+s_run_number+"_pr_dchit_R2_cutlvl"+Integer.toString(i), 500, -150.0, 150.0, 500, -150.0, 150.0 ));
+ 	h2_pr_dchit_R3_xy.add( new H2F("h2_"+s_run_number+"_pr_dchit_R3_cutlvl"+Integer.toString(i),"h2_"+s_run_number+"_pr_dchit_R3_cutlvl"+Integer.toString(i), 500, -200.0, 200.0, 500, -150.0, 150.0 ));
+ 	h2_pr_masstimep.add( new H2F("h2_"+s_run_number+"_pr_masstimep_cutlvl"+Integer.toString(i),"h2_"+s_run_number+"_pr_masstimep_cutlvl"+Integer.toString(i), 200, 0.0, 1.2, 200, min_p, max_p ));
+ 	h_pr_masstime.add( new H1F("h_"+s_run_number+"_pr_masstime_cutlvl"+Integer.toString(i),"h1_"+s_run_number+"_pr_masstime_cutlvl"+Integer.toString(i), 150, 0.0, 2.0 ));
+
+ 	h2_pr_ectotp.add( new H2F("h2_"+s_run_number+"_pr_ectotp_cutlvl"+Integer.toString(i),"h2_"+s_run_number+"_pr_ectotp_cutlvl"+Integer.toString(i), 200, 0.0, 4.0, 200, 0.0, 0.5 ));
+ 	h_pr_pcal_e.add( new H1F("h_"+s_run_number+"_pr_pcal_e_cutlvl"+Integer.toString(i),"h_"+s_run_number+"_pr_pcal_e_cutlvl"+Integer.toString(i), 150, 0.0, 0.50 ));
+ 	h_pr_eical_e.add( new H1F("h_"+s_run_number+"_pr_eical_e_cutlvl"+Integer.toString(i),"h_"+s_run_number+"_pr_eical_e_cutlvl"+Integer.toString(i), 150, 0.0, 0.50 ));
+ 	h_pr_eocal_e.add( new H1F("h_"+s_run_number+"_pr_eocal_e_cutlvl"+Integer.toString(i),"h_"+s_run_number+"_pr_eocal_e_cutlvl"+Integer.toString(i), 150, 0.0, 0.50 ));
+
     }
 
     public void createProtonSectorHistograms( int sector, int max_cuts ){
 	h_pr_sect_p.add( new Vector<H1F>() );
+	h_pr_sect_masstime.add( new Vector<H1F>() );
  	h_pr_sect_theta.add( new Vector<H1F>() );
 	h_pr_sect_phi.add( new Vector<H1F>() );
 	h2_pr_sect_betap.add( new Vector<H2F>() );
 	h2_pr_sect_deltabeta.add( new Vector<H2F>() );
 	h2_pr_sect_deltimep.add( new Vector<H2F>() );
+	h2_pr_sect_masstimep.add( new Vector<H2F>() );
+	
+	h2_pr_sect_ectotp.add( new Vector<H2F>() );
+	h_pr_sect_pcal_e.add( new Vector<H1F>() );
+	h_pr_sect_eical_e.add( new Vector<H1F>() );
+	h_pr_sect_eocal_e.add( new Vector<H1F>() );
 	
 	for( int i = 0; i <= max_cuts; i++ ){
-	    (h_pr_sect_p.get(sector)).add( new H1F("h_"+s_run_number+"_pr_" + Integer.toString(sector) + "_p_cutlvl"+Integer.toString(i),"h_"+s_run_number+"_pr_" + Integer.toString(sector)  + "_p_cutlvl"+Integer.toString(i), 300, min_p, max_p ) );  
-	    (h2_pr_sect_betap.get(sector)).add( new H2F("h2_"+s_run_number+"_pr_" + Integer.toString(sector) + "_betap_cutlvl"+Integer.toString(i),"h2_"+s_run_number+"_pr_" + Integer.toString(sector)  + "_betap_cutlvl"+Integer.toString(i), 100, min_p, max_p, 100, min_b, max_b ) );  
-	    (h2_pr_sect_deltabeta.get(sector)).add( new H2F("h2_"+s_run_number+"_pr_" + Integer.toString(sector) + "_deltabeta_cutlvl"+Integer.toString(i),"h2_"+s_run_number+"_pr_" + Integer.toString(sector)  + "_deltabeta_cutlvl"+Integer.toString(i), 100, min_p, max_p, 100, min_delb, max_delb ) );  
-	    (h2_pr_sect_deltimep.get(sector)).add( new H2F("h2_"+s_run_number+"_pr_" + Integer.toString(sector) + "_deltimep_cutlvl"+Integer.toString(i),"h2_"+s_run_number+"_pr_" + Integer.toString(sector)  + "_deltimep_cutlvl"+Integer.toString(i), 100, min_p, max_p, 100, min_delt, max_delt ) );  
+	    (h_pr_sect_p.get(sector)).add( new H1F("h_"+s_run_number+"_pr_" + Integer.toString(sector) + "_p_cutlvl"+Integer.toString(i),"h_"+s_run_number+"_pr_" + Integer.toString(sector)  + "_p_cutlvl"+Integer.toString(i), 200, min_p, max_p ) );  
+	    (h_pr_sect_masstime.get(sector)).add( new H1F("h_"+s_run_number+"_pr_" + Integer.toString(sector) + "_masstime_cutlvl"+Integer.toString(i),"h_"+s_run_number+"_pr_" + Integer.toString(sector)  + "_masstime_cutlvl"+Integer.toString(i), 150, 0.0 , 2.0) );  
+	    (h2_pr_sect_betap.get(sector)).add( new H2F("h2_"+s_run_number+"_pr_" + Integer.toString(sector) + "_betap_cutlvl"+Integer.toString(i),"h2_"+s_run_number+"_pr_" + Integer.toString(sector)  + "_betap_cutlvl"+Integer.toString(i), 200, min_p, max_p, 200, min_b, max_b ) );  
+	    (h2_pr_sect_deltabeta.get(sector)).add( new H2F("h2_"+s_run_number+"_pr_" + Integer.toString(sector) + "_deltabeta_cutlvl"+Integer.toString(i),"h2_"+s_run_number+"_pr_" + Integer.toString(sector)  + "_deltabeta_cutlvl"+Integer.toString(i), 200, min_p, max_p, 200, min_delb, max_delb ) );  
+	    (h2_pr_sect_deltimep.get(sector)).add( new H2F("h2_"+s_run_number+"_pr_" + Integer.toString(sector) + "_deltimep_cutlvl"+Integer.toString(i),"h2_"+s_run_number+"_pr_" + Integer.toString(sector)  + "_deltimep_cutlvl"+Integer.toString(i), 200, min_p, max_p, 200, min_delt, max_delt ) );  
+	    (h2_pr_sect_masstimep.get(sector)).add( new H2F("h2_"+s_run_number+"_pr_" + Integer.toString(sector) + "_masstimep_cutlvl"+Integer.toString(i),"h2_"+s_run_number+"_pr_" + Integer.toString(sector)  + "_masstimep_cutlvl"+Integer.toString(i), 200, 0.0, 1.2, 200, min_p, max_p ) );  
+
+	    (h2_pr_sect_ectotp.get(sector)).add( new H2F("h2_"+s_run_number+"_pr_" + Integer.toString(sector) + "_ectotp_cutlvl"+Integer.toString(i),"h2_"+s_run_number+"_pr_" + Integer.toString(sector)  + "_ectotp_cutlvl"+Integer.toString(i), 200, 0.0, 4.0, 200, 0.0, 0.5 ) );  
+	    (h_pr_sect_pcal_e.get(sector)).add( new H1F("h_"+s_run_number+"_pr_" + Integer.toString(sector) + "_pcal_e_cutlvl"+Integer.toString(i),"h_"+s_run_number+"_pr_" + Integer.toString(sector)  + "_pcal_e_cutlvl"+Integer.toString(i), 200, 0.0, 0.50 ) );  
+	    (h_pr_sect_eical_e.get(sector)).add( new H1F("h_"+s_run_number+"_pr_" + Integer.toString(sector) + "_eical_e_cutlvl"+Integer.toString(i),"h_"+s_run_number+"_pr_" + Integer.toString(sector)  + "_eical_e_cutlvl"+Integer.toString(i), 200, 0.0, 0.50 ) );  
+	    (h_pr_sect_eocal_e.get(sector)).add( new H1F("h_"+s_run_number+"_pr_" + Integer.toString(sector) + "_eocal_e_cutlvl"+Integer.toString(i),"h_"+s_run_number+"_pr_" + Integer.toString(sector)  + "_eocal_e_cutlvl"+Integer.toString(i), 200, 0.0, 0.50 ) );  
+	    	    
+
 	}
     }
 
@@ -132,6 +190,11 @@ public class BPIDProtonHistograms {
 	dir.mkdir("/proton/cutlvls/h_pr_p/");
 	dir.cd("/proton/cutlvls/h_pr_p/");
 	for( H1F h_temp : h_pr_p ){
+	    EmbeddedCanvas c_temp = new EmbeddedCanvas();
+	    c_temp.setSize(800,800);
+	    h_temp.setTitleX("p [GeV]");
+	    c_temp.draw(h_temp);
+	    c_temp.save("/lustre/expphy/work/hallb/clas12/bclary/pics/pid_clary/"+h_temp.getTitle()+".png");
 	    dir.addDataSet(h_temp);
 	}
 
@@ -159,9 +222,60 @@ public class BPIDProtonHistograms {
 	    dir.addDataSet(h_temp);
 	}
 
-	dir.mkdir("/proton/cutlvls/h_pr_beta_mntm/");
-	dir.cd("/proton/cutlvls/h_pr_beta_mntm/");
-	for( H1F h_temp : h_pr_beta_mntm ){
+	dir.mkdir("/proton/cutlvls/h_pr_masstime/");
+	dir.cd("/proton/cutlvls/h_pr_masstime/");
+	for( H1F h_temp : h_pr_masstime ){
+	    EmbeddedCanvas c_temp = new EmbeddedCanvas();
+	    c_temp.setSize(800,800);
+	    h_temp.setTitleX("Mass [GeV/c]");
+	    c_temp.draw(h_temp);
+	    c_temp.save("/lustre/expphy/work/hallb/clas12/bclary/pics/pid_clary/"+h_temp.getTitle()+".png");
+	    dir.addDataSet(h_temp);
+	}
+
+	dir.mkdir("/proton/cutlvls/h2_pr_masstimep/");
+	dir.cd("/proton/cutlvls/h2_pr_masstimep/");
+	for( H2F h_temp : h2_pr_masstimep ){
+	    EmbeddedCanvas c_temp = new EmbeddedCanvas();
+	    c_temp.setSize(800,800);
+	    h_temp.setTitleX("Mass [GeV/c]");
+	    h_temp.setTitleY("p [GeV/c^2]");
+	    c_temp.draw(h_temp,"colz");
+	    c_temp.save("/lustre/expphy/work/hallb/clas12/bclary/pics/pid_clary/"+h_temp.getTitle()+".png");
+	    dir.addDataSet(h_temp);
+	}
+
+	dir.mkdir("/proton/cutlvls/h2_pr_dchit_R1_xy/");
+	dir.cd("/proton/cutlvls/h2_pr_dchit_R1_xy/");
+	for( H2F h_temp : h2_pr_dchit_R1_xy){
+	    EmbeddedCanvas c_temp = new EmbeddedCanvas();
+	    c_temp.setSize(800,800);
+	    h_temp.setTitleX("DC X [cm]");
+	    h_temp.setTitleX("DC Y [cm]"); 
+	    c_temp.draw(h_temp,"colz");
+	    c_temp.save("/lustre/expphy/work/hallb/clas12/bclary/pics/pid_clary/"+h_temp.getTitle()+".png");
+	    dir.addDataSet(h_temp);
+	}
+	dir.mkdir("/proton/cutlvls/h2_pr_dchit_R2_xy/");
+	dir.cd("/proton/cutlvls/h2_pr_dchit_R2_xy/");
+	for( H2F h_temp : h2_pr_dchit_R2_xy){
+	    dir.addDataSet(h_temp);
+	}
+	dir.mkdir("/proton/cutlvls/h2_pr_dchit_R3_xy/");
+	dir.cd("/proton/cutlvls/h2_pr_dchit_R3_xy/");
+	for( H2F h_temp : h2_pr_dchit_R3_xy){
+	    EmbeddedCanvas c_temp = new EmbeddedCanvas();
+	    c_temp.setSize(800,800);
+	    h_temp.setTitleX("DC X [cm]");
+	    h_temp.setTitleX("DC Y [cm]"); 
+	    c_temp.draw(h_temp,"colz");
+	    c_temp.save("/lustre/expphy/work/hallb/clas12/bclary/pics/pid_clary/"+h_temp.getTitle()+".png");
+	    dir.addDataSet(h_temp);
+	}
+
+	dir.mkdir("/proton/cutlvls/h2_pr_vzphi/");
+	dir.cd("/proton/cutlvls/h2_pr_vzphi/");
+	for( H2F h_temp : h2_pr_vzphi){
 	    dir.addDataSet(h_temp);
 	}
 
@@ -177,9 +291,54 @@ public class BPIDProtonHistograms {
 	    dir.addDataSet(h_temp);
 	}
     
+	dir.mkdir("/proton/cutlvls/h2_pr_ectotp/");
+	dir.cd("/proton/cutlvls/h2_pr_ectotp/");
+	for( H2F h_temp : h2_pr_ectotp){
+	    EmbeddedCanvas c_temp = new EmbeddedCanvas();
+	    c_temp.setSize(800,800);
+	    h_temp.setTitleX("p [GeV]");
+	    h_temp.setTitleY("EC SF"); 
+	    c_temp.draw(h_temp,"colz");
+	    c_temp.save("/lustre/expphy/work/hallb/clas12/bclary/pics/pid_clary/"+h_temp.getTitle()+".png");
+	    dir.addDataSet(h_temp);
+	}
+
+	dir.mkdir("/proton/cutlvls/h_pr_pcal_e/");
+	dir.cd("/proton/cutlvls/h_pr_pcal_e/");
+	for( H1F h_temp : h_pr_pcal_e){
+	    EmbeddedCanvas c_temp = new EmbeddedCanvas();
+	    c_temp.setSize(800,800);
+	    h_temp.setTitleX("PCAL Energy [GeV]");
+	    c_temp.draw(h_temp);
+	    c_temp.save("/lustre/expphy/work/hallb/clas12/bclary/pics/pid_clary/"+h_temp.getTitle()+".png");
+	    dir.addDataSet(h_temp);
+	}
+
+	dir.mkdir("/proton/cutlvls/h_pr_eical__e/");
+	dir.cd("/proton/cutlvls/h_pr_eical_e/");
+	for( H1F h_temp : h_pr_eical_e){
+	    EmbeddedCanvas c_temp = new EmbeddedCanvas();
+	    c_temp.setSize(800,800);
+	    h_temp.setTitleX("ECAL EI [GeV]");
+	    c_temp.draw(h_temp);
+	    c_temp.save("/lustre/expphy/work/hallb/clas12/bclary/pics/pid_clary/"+h_temp.getTitle()+".png");
+	    dir.addDataSet(h_temp);
+	}
+
+	dir.mkdir("/proton/cutlvls/h_pr_eocal__e/");
+	dir.cd("/proton/cutlvls/h_pr_eocal_e/");
+	for( H1F h_temp : h_pr_eocal_e){
+	    EmbeddedCanvas c_temp = new EmbeddedCanvas();
+	    c_temp.setSize(800,800);
+	    h_temp.setTitleX("ECAL EO [GeV]");
+	    c_temp.draw(h_temp);
+	    c_temp.save("/lustre/expphy/work/hallb/clas12/bclary/pics/pid_clary/"+h_temp.getTitle()+".png");
+	    dir.addDataSet(h_temp);
+	}
+
+
 	dir.mkdir("/proton/cutlvls/h_pr_sect_panel_deltimep/");
 	dir.cd("/proton/cutlvls/h_pr_sect_panel_deltimep/");
-
 	for( int s = 0; s < 6; s++){
 	    EmbeddedCanvas c_sp_deltp = new EmbeddedCanvas();
 	    c_sp_deltp.setSize(1600,800);
@@ -195,7 +354,6 @@ public class BPIDProtonHistograms {
 	    c_sp_deltp.save("/lustre/expphy/work/hallb/clas12/bclary/pics/pid_clary/h_"+s_run_number+"_pr_"+Integer.toString(s)+"_panel_cutlvl0.png");
 
 	}
-
 	
 	dir.mkdir("/proton/cutlvls/h2_pr_deltimep/");
 	dir.cd("/proton/cutlvls/h2_pr_deltimep/");
@@ -227,6 +385,9 @@ public class BPIDProtonHistograms {
 	    dir.addDataSet(h_temp);
 	}
 
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///SECTOR BASED PLOTS
+
 	dir.mkdir("/proton/cutlvls/h2_pr_sect_betap/");
 	dir.cd("/proton/cutlvls/h2_pr_sect_betap/");
 	for( int i = 0; i < h2_pr_sect_betap.size(); i++ ){
@@ -252,6 +413,7 @@ public class BPIDProtonHistograms {
 	    }
 	}
 
+
 	dir.mkdir("/proton/cutlvls/h2_pr_sect_deltimep/");
 	dir.cd("/proton/cutlvls/h2_pr_sect_deltimep/");
 	for( int i = 0; i < h2_pr_sect_deltimep.size(); i++ ){
@@ -260,9 +422,95 @@ public class BPIDProtonHistograms {
 		dir.addDataSet(v_temp.get(j));
 	    }
 	}	
+    
+
+
+	dir.mkdir("/proton/cutlvls/h_pr_sect_masstime/");
+	dir.cd("/proton/cutlvls/h_pr_sect_masstime/");
+	for( int i = 0; i < h_pr_sect_masstime.size(); i++ ){
+ 	   Vector<H1F> v_temp = h_pr_sect_masstime.get(i);       
+	    for( int j = 0; j < v_temp.size(); j++){		
+		dir.addDataSet(v_temp.get(j));
+	    }
+	}
+
+	dir.mkdir("/proton/cutlvls/h2_pr_sect_masstimep/");
+	dir.cd("/proton/cutlvls/h2_pr_sect_masstimep/");
+	for( int i = 0; i < h2_pr_sect_masstimep.size(); i++ ){
+ 	   Vector<H2F> v_temp = h2_pr_sect_masstimep.get(i);       
+	    for( int j = 0; j < v_temp.size(); j++){		
+		EmbeddedCanvas c_temp = new EmbeddedCanvas();
+		c_temp.setSize(800,800);
+		v_temp.get(j).setTitleX("Mass [GeV/c]");
+		v_temp.get(j).setTitleY("p [GeV/c^2]"); 
+		c_temp.draw(v_temp.get(j),"colz");
+		c_temp.save("/lustre/expphy/work/hallb/clas12/bclary/pics/pid_clary/"+v_temp.get(j).getTitle()+".png");	       
+		dir.addDataSet(v_temp.get(j));
+	    }
+	}
+
+
+	dir.mkdir("/proton/cutlvls/h2_pr_sect_ectotp/");
+	dir.cd("/proton/cutlvls/h2_pr_sect_ectotp/");
+	for( int i = 0; i < h2_pr_sect_ectotp.size(); i++ ){
+ 	   Vector<H2F> v_temp = h2_pr_sect_ectotp.get(i);       
+	    for( int j = 0; j < v_temp.size(); j++){		
+		EmbeddedCanvas c_temp = new EmbeddedCanvas();
+		c_temp.setSize(800,800);
+		v_temp.get(j).setTitleX("p [GeV]");
+		v_temp.get(j).setTitleY("EC SF"); 
+		c_temp.draw(v_temp.get(j),"colz");
+		c_temp.save("/lustre/expphy/work/hallb/clas12/bclary/pics/pid_clary/"+v_temp.get(j).getTitle()+".png");	       
+		dir.addDataSet(v_temp.get(j));
+	    }
+	}
+
+	dir.mkdir("/proton/cutlvls/h_pr_sect_pcal_e/");
+	dir.cd("/proton/cutlvls/h_pr_sect_pcal_e/");
+	for( int i = 0; i < h_pr_sect_pcal_e.size(); i++ ){
+ 	   Vector<H1F> v_temp = h_pr_sect_pcal_e.get(i);       
+	    for( int j = 0; j < v_temp.size(); j++){		
+		EmbeddedCanvas c_temp = new EmbeddedCanvas();
+		c_temp.setSize(800,800);
+		v_temp.get(j).setTitleX("PCAL [GeV]");
+		c_temp.draw(v_temp.get(j));
+		c_temp.save("/lustre/expphy/work/hallb/clas12/bclary/pics/pid_clary/"+v_temp.get(j).getTitle()+".png");	       
+		dir.addDataSet(v_temp.get(j));
+	    }
+	}
+
+
+	dir.mkdir("/proton/cutlvls/h_pr_sect_ei_e/");
+	dir.cd("/proton/cutlvls/h_pr_sect_ei_e/");
+	for( int i = 0; i < h_pr_sect_eical_e.size(); i++ ){
+ 	   Vector<H1F> v_temp = h_pr_sect_eical_e.get(i);       
+	   for( int j = 0; j < v_temp.size(); j++){		
+	       EmbeddedCanvas c_temp = new EmbeddedCanvas();
+	       c_temp.setSize(800,800);
+	       v_temp.get(j).setTitleX("EC EI [GeV]");
+	       c_temp.draw(v_temp.get(j));
+	       c_temp.save("/lustre/expphy/work/hallb/clas12/bclary/pics/pid_clary/"+v_temp.get(j).getTitle()+".png");	       
+	       dir.addDataSet(v_temp.get(j));
+	    }
+	}
+
+ 
+	dir.mkdir("/proton/cutlvls/h_pr_sect_eo_e/");
+	dir.cd("/proton/cutlvls/h_pr_sect_eo_e/");
+	for( int i = 0; i < h_pr_sect_eocal_e.size(); i++ ){
+ 	   Vector<H1F> v_temp = h_pr_sect_eocal_e.get(i);       
+	    for( int j = 0; j < v_temp.size(); j++){		
+	       EmbeddedCanvas c_temp = new EmbeddedCanvas();
+	       c_temp.setSize(800,800);
+	       v_temp.get(j).setTitleX("EC EO [GeV]");
+	       c_temp.draw(v_temp.get(j));
+	       c_temp.save("/lustre/expphy/work/hallb/clas12/bclary/pics/pid_clary/"+v_temp.get(j).getTitle()+".png");	       
+	       dir.addDataSet(v_temp.get(j));
+	    }
+	}
+
+
     }
-
-
 
     public void viewHipoOut(){
 

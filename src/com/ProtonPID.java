@@ -3,6 +3,9 @@ package src.com;
 import src.com.PositiveChargeCut;
 import src.com.ProtonVertexCut;
 import src.com.ProtonBetaCut;
+import src.com.DCFiducialCut;
+import src.com.DCFiducialR2Cut;
+import src.com.DCFiducialR3Cut;
 
 import org.jlab.io.base.DataEvent;
 import org.jlab.io.base.DataBank;
@@ -21,14 +24,19 @@ public class ProtonPID implements IParticleIdentifier{
     PositiveChargeCut charge_cut = new PositiveChargeCut();
     ProtonVertexCut vertex_cut = new ProtonVertexCut();
     ProtonBetaCut beta_cut = new ProtonBetaCut();
+    DCFiducialCut dcr1_fiducial_cut = new DCFiducialCut();
+    DCFiducialR2Cut dcr2_fiducial_cut = new DCFiducialR2Cut();
+    DCFiducialR3Cut dcr3_fiducial_cut = new DCFiducialR3Cut();
 
     public void initializeCuts(){
 
 	v_cuts.add(charge_cut);
 	v_cuts.add(vertex_cut);
 	v_cuts.add(beta_cut);
-	//v_cuts.add(pcalhit_cut);
-
+	v_cuts.add(dcr1_fiducial_cut);
+	v_cuts.add(dcr2_fiducial_cut);
+	v_cuts.add(dcr3_fiducial_cut);
+	
 
     }
 

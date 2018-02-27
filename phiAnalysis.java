@@ -333,25 +333,22 @@ public class phiAnalysis{
 			//LOOK AT EFFECT OF EACH CUT ON DATA			
 			
 			v_el_tests = find_el.processCutsVector(event, k);
-			h_pid_cutlvls.FillElectronPID( v_el_tests, event, k );
+			//h_pid_cutlvls.FillElectronPID( v_el_tests, event, k );
 			
 			
 			int clas12pid = event.getBank("REC::Particle").getInt("pid",k);
 			int clas12charge = event.getBank("REC::Particle").getInt("charge",k);
 			if( clas12charge > 0 || clas12charge < 0 ){
 			//if( clas12pid == 11 || clas12pid == -11 || clas12pid == 2212 || clas12pid == -2212 || clas12pid == 211 || clas12pid == -211 ){
-			    h_pid_cutlvls.fillPNDriftChamber(event, k);
+			    //  h_pid_cutlvls.fillPNDriftChamber(event, k);
 			}
 
 
 			if ( !el_test ){
 			    
-			    //el_test = find_el.processCutsVectorResults(v_el_tests);
-			    //System.out.println(" >> checking " );
+			    el_test = find_el.processCutsVectorResults(v_el_tests);
 			    if( el_test ){
-				//System.out.println(" >> passed " );
 				
-
 				tot_el_pass+=1;
 				n_el+=1;
 				golden_el_index = k;
@@ -367,7 +364,22 @@ public class phiAnalysis{
 			    }			    
 			    //	}
 			}
+
+			/////////////////////////////////////////////////////////////////////
+			//PROTON TEST IF ELECTRON IS PRESENT AND NOT EQUAL TO ELECTRON INDEX
+			if( el_test ){
+			    for( int j = 0; j < recBank.rows(); j++ ){
+				if( j != golden_el_index ){
+				    //System.out.println(" >> testing protons " );
+				    v_pr_tests = find_pr.processCutsVector(event, j);
+				    h_pid_cutlvls.fillProtonPID( v_pr_tests, event, j );
+				}
+			    }
+			}
 			    
+
+			//////////////////////////////////////////////////////
+			//CLAS12 PID
 			if( !clas12_el_test ){
 
 			    //clas12_el_test = clas12_el.processCuts(event, 0);
@@ -392,9 +404,7 @@ public class phiAnalysis{
 			//  h_clas12_pid.fillKaonPCLAS12PID(event,k);
 			//}
 			    
-
-			//v_pr_tests = find_pr.processCutsVector(event, k);
-			//h_pid_cutlvls.fillProtonPID( v_pr_tests, event, k ); 
+ 
 
 		       //v_kp_tests = find_kp.processCutsVector(event, k);
 		       //	h_pid_cutlvls.fillKaonPPID( v_kp_tests, event, k ); 

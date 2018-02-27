@@ -60,11 +60,11 @@ public class BHistoPIDLevel {
 
 	for( int j = 0; j <= 6; j++ ){
 	    h_bpid.createElectronSectorHistograms(j,8);
-	    h_bprotonpid.createProtonSectorHistograms(j,4);
+	    h_bprotonpid.createProtonSectorHistograms(j,6);
 	    h_bkppid.createKaonPSectorHistograms(j,3);
 	}
 
-	h_bprotonpid.createProtonFTOFHistograms(6,50,4);	   
+	h_bprotonpid.createProtonFTOFHistograms(6,50,6);	   
 	// s is for sector
 	// p is for ftof bar or panel
 	//for( int s = 0; s < 6; s++ ){ 
@@ -164,6 +164,7 @@ public class BHistoPIDLevel {
 		    }
 		}
 
+		
   		
 		if( event.hasBank("REC::Track") && event.hasBank("TimeBasedTrkg::TBCrosses") && event.hasBank("TimeBasedTrkg::TBTracks") ){
 		    int dc_sector_r1 = Detectors.getDCSectorR1(event, rec_i) - 1;
@@ -288,6 +289,10 @@ public class BHistoPIDLevel {
 		double p = lv_pr.p();
 		double theta = Math.toDegrees(lv_pr.theta());
 		double phi = Math.toDegrees(lv_pr.phi());
+
+		h_bprotonpid.h2_pr_vzphi.get(j).fill(p, phi);
+
+		Map<Integer, Double> m_edep = Detectors.getEDepCal( event, rec_i );
 		
 		//CALCULATE DELTA TIME FOR EACH HIT
 		for( int i = 0; i < scintBank.rows(); i++){
@@ -309,34 +314,101 @@ public class BHistoPIDLevel {
 			double pr_tmeas = r_path/pr_beta_mntm * (1.0/30.0);
 			double pr_deltime = -pr_tmeas + pr_tof;
 			double pr_delbeta = pr_beta_clas12 - pr_beta_mntm;
+		
+			double pr_masstime = p*Math.sqrt( 1/(pr_beta_time*pr_beta_time) - 1.0 );
+			
+			///DO THESE GO WHERE?????
+			//			
+			h_bprotonpid.h_pr_masstime.get(j).fill(pr_masstime);
+			h_bprotonpid.h2_pr_masstimep.get(j).fill(pr_masstime,p);
 
-		       
+			h_bprotonpid.h_pr_rpath.get(j).fill(r_path);
+			h_bprotonpid.h2_pr_tof.get(j).fill(p,pr_tof);		       
+			h_bprotonpid.h_pr_beta_mntm.get(j).fill(pr_beta_mntm);
+			
+			h_bprotonpid.h2_pr_deltimep.get(j).fill(p,pr_deltime);			
+			h_bprotonpid.h2_pr_betap.get(j).fill(p,pr_beta_clas12);		
+			
+			h_bprotonpid.h2_pr_deltabeta.get(j).fill(p, pr_delbeta);
+			h_bprotonpid.h_pr_p.get(j).fill(p);
+			    
+			    
 			//if( scint_sector >= 0 ){
 			//}
 			//System.out.println(" >> scint det " + scint_detector );
-			if( scint_sector >= 0 && scint_layer == 1 && scint_bar >= 0 && scint_detector == 12){
+			if( scint_sector >= 0 && scint_detector == 12 ){ // && scint_layer == 1){
 			    //System.out.println(" >> " + scint_sector );
-			    h_bprotonpid.h_pr_rpath.get(j).fill(r_path);
-			    h_bprotonpid.h2_pr_tof.get(j).fill(p,pr_tof);		       
-			    h_bprotonpid.h_pr_beta_mntm.get(j).fill(pr_beta_mntm);
-			    
-			    h_bprotonpid.h2_pr_deltimep.get(j).fill(p,pr_deltime);			
-			    h_bprotonpid.h2_pr_betap.get(j).fill(p,pr_beta_clas12);		
-			    
-			    h_bprotonpid.h2_pr_deltabeta.get(j).fill(p, pr_delbeta);
-			    h_bprotonpid.h_pr_p.get(j).fill(p);
-			  
+			    			  
 			    h_bprotonpid.h2_pr_sect_betap.get(scint_sector).get(j).fill(p,pr_beta_clas12);
 			    h_bprotonpid.h2_pr_sect_deltabeta.get(scint_sector).get(j).fill(p, pr_delbeta);
 			    h_bprotonpid.h2_pr_sect_deltimep.get(scint_sector).get(j).fill(p, pr_deltime);			    
 			    h_bprotonpid.h_pr_beta_time.get(j).fill(pr_beta_clas12);
-
+			    h_bprotonpid.h_pr_sect_masstime.get(scint_sector).get(j).fill(pr_masstime);
+			    h_bprotonpid.h2_pr_sect_masstimep.get(scint_sector).get(j).fill(pr_masstime,p);
 			    //////////////////////////
-  
-			    h_bprotonpid.m_pr_sect_panel_deltp.get(scint_sector).get(scint_bar).get(j).fill(p,pr_deltime);
+
+			    if( scint_layer == 1 && scint_bar >= 0 ){
+				h_bprotonpid.m_pr_sect_panel_deltp.get(scint_sector).get(scint_bar).get(j).fill(p,pr_deltime);
+			    }
 			    //h_bprotonpid.h_pr_sect_panel_deltimep.get(scint_sector).get(scint_bar).get(j).fill(p,pr_deltime);
 			}			
+		
 		    }
+		}
+		if( event.hasBank("REC::Track") && event.hasBank("TimeBasedTrkg::TBCrosses") && event.hasBank("TimeBasedTrkg::TBTracks") ){
+		    int dc_sector_r1 = Detectors.getDCSectorR1(event, rec_i) - 1;
+		    double dc_x1 = Detectors.getDCCrossX1(event, rec_i);
+		    double dc_y1 = Detectors.getDCCrossY1(event, rec_i);
+		    
+		    int dc_sector_r3 = Detectors.getDCSectorR3(event, rec_i) - 1;
+		    double dc_x3 = Detectors.getDCCrossX3(event, rec_i);
+		    double dc_y3 = Detectors.getDCCrossY3(event, rec_i);
+		    //System.out.println(" >> DC HIT X Y " + dc_x1 + " " + dc_y1);
+		    
+		    Vector<Double> dc_r1_rotxy = Calculator.getRotatedCoordinates(dc_x1,dc_y1,dc_sector_r1);
+		    Vector<Double> dc_r3_rotxy = Calculator.getRotatedCoordinates(dc_x3,dc_y3,dc_sector_r3);
+		    
+		    if( dc_x1 > -1000 && dc_y1 > -1000 && dc_sector_r1 >= 0){
+			Vector<Double> dc_r1_locxy = Detectors.getDCCrossLocalR1(event, rec_i);				
+			h_bprotonpid.h2_pr_dchit_R1_xy.get(j).fill(dc_r1_locxy.get(0), dc_r1_locxy.get(1));
+		    }			   
+		    if( dc_x3 > -1000 && dc_y3 > -1000 && dc_sector_r3 >= 0){
+			Vector<Double> dc_r3_locxy = Detectors.getDCCrossLocalR3(event, rec_i);				
+			h_bprotonpid.h2_pr_dchit_R3_xy.get(j).fill(dc_r3_locxy.get(0), dc_r3_locxy.get(1));							
+		    }			    
+		}
+				       												
+
+		int sector_ec = Detectors.getSectorECAL( event, rec_i ) - 1; 
+		int sector_pcal = Detectors.getSectorPCAL( event, rec_i ) - 1;
+
+		double e_pcal = 0.0;
+		double e_ecal_ei = 0.0;
+		double e_ecal_eo = 0.0;
+
+		for( Map.Entry<Integer,Double> entry : m_edep.entrySet() ){
+		    int layer = entry.getKey();
+		    double edep = entry.getValue();		    
+		    if( layer == Detectors.pcal ){
+			h_bprotonpid.h_pr_pcal_e.get(j).fill(edep);	
+			if( sector_pcal >= 0 ){ h_bprotonpid.h_pr_sect_pcal_e.get(sector_pcal).get(j).fill(edep); e_pcal = edep; }
+		    }
+		    if( layer == Detectors.ec_ei ){
+			h_bprotonpid.h_pr_eical_e.get(j).fill(edep);		
+			if( sector_ec >= 0 ) {h_bprotonpid.h_pr_sect_eical_e.get(sector_ec).get(j).fill(edep); e_ecal_ei = edep; }
+		    }
+		    if( layer == Detectors.ec_eo ){
+			h_bprotonpid.h_pr_eocal_e.get(j).fill(edep);		
+			if( sector_ec >= 0 ){h_bprotonpid.h_pr_sect_eocal_e.get(sector_ec).get(j).fill(edep); e_ecal_eo = edep;}
+		    }		    
+		    //ecdep_tot = ecdep_tot + edep;
+		}
+		
+		double etot = e_ecal_ei + e_ecal_eo;
+		h_bprotonpid.h2_pr_ectotp.get(j).fill(p, etot/p);
+
+		if( sector_ec >= 0 ){
+		    h_bprotonpid.h2_pr_sect_ectotp.get(sector_ec).get(j).fill(p,etot/p);		    
 		}					       
 	    }		    	    	  	    
 	    else if( !pass) {
@@ -530,11 +602,11 @@ public class BHistoPIDLevel {
 	h_bpid.electronHistoToHipo();
 	h_bpid.slicedFitValuesToText();
 
-	//h_bprotonpid.protonHistoToHipo();
+	h_bprotonpid.protonHistoToHipo();
 	//h_bkppid.kaonpHistoToHipo();
 	if( view ){
 	    h_bpid.viewHipoOut();
-	    //h_bprotonpid.viewHipoOut();
+	    h_bprotonpid.viewHipoOut();
 	    //h_bkppid.viewHipoOut();
 	    h_bpid.printHistograms();
 	}

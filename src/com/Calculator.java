@@ -345,6 +345,81 @@ public class Calculator{
 	return fit;	    
     }
 
+    public static F1D fitHistogram( H1F h_temp, double temp_percentofmax ){
+
+	System.out.println(" >> FITTING HISTOGRAM " + h_temp.getName() );
+	double xlow, xhigh, histmax;
+	int binlow, binhigh, binmax;
+
+	double percentofmax = temp_percentofmax;
+    
+	F1D fit = null;
+
+	//if( h_temp.getEntries() > 0 ){
+	binmax = h_temp.getMaximumBin();
+	histmax = h_temp.getMax();
+	binlow = binmax;
+	binhigh = binmax;
+	try{	
+	    while( h_temp.getBinContent(binhigh++) >= percentofmax*histmax && binhigh <= h_temp.getAxis().getNBins() ){}
+	    while( h_temp.getBinContent(binlow--) >= percentofmax*histmax && binlow > 1 ){}
+	    
+	    xlow = h_temp.getDataX(binlow) - h_temp.getDataEX(binlow)/2.0; // needs to be low edge, only center now
+	    xhigh = h_temp.getDataX(binhigh+1) - h_temp.getDataEX(binhigh+1)/2.0;
+ 	    
+	    //System.out.println(" >> values used " + xlow + " " + xhigh + " " + histmax );
+	    
+	    F1D fit_temp = new F1D("fit_temp","[amp]*gaus(x,[mean],[sigma])", xlow, xhigh );
+	    fit_temp.setParameter(0, histmax);
+	    fit_temp.setParameter(1, h_temp.getMean() );
+	    fit_temp.setParameter(2, h_temp.getRMS() );
+	    
+	    DataFitter.fit(fit_temp, h_temp, "REQ"); //was only R at first
+	    fit = fit_temp;  
+
+	    //}
+	    System.out.println(" >> PARAMETER SET " + fit_temp.getParameter(0) + " " + fit_temp.getParameter(1) + " " + fit_temp.getParameter(2) );
+
+	}
+	catch(Exception e){
+	    System.out.println("ERROR WITH FITTING - LIKELY IT DID NOT CONVERGE");
+	}
+	return fit;	    
+    }
+
+    public static F1D fitHistogramRange( H1F h_temp, double temp_percentofmax, double min, double max){
+
+	System.out.println(" >> FITTING HISTOGRAM " + h_temp.getName() );
+	double xlow, xhigh, histmax;
+
+ 	double percentofmax = temp_percentofmax; 
+	int n_copybins = (int)h_temp.getXaxis().getNBins()*( max - min)/(h_temp.getXaxis().max() - h_temp.getXaxis().min() );
+
+	H1F h_copy = new H1F("h_copy","h_copy",n_copybins, min, max );
+	for( int bins = 0; bins < n_copybins; bins++){
+	    h_copy.setBinContent(bins, h_temp.getBinContent(bins) );	
+	}
+	histmax = h_copy.getMax();
+	
+	F1D fit = null;
+
+	try{
+	    F1D fit_temp = new F1D("fit_temp","[amp]*gaus(x,[mean],[sigma])", min, max );
+	    fit_temp.setParameter(0, histmax);
+	    fit_temp.setParameter(1, h_copy.getMean() );
+	    fit_temp.setParameter(2, h_copy.getRMS() );
+	    
+	    DataFitter.fit(fit_temp, h_temp, "REQ"); //was only R at first
+	    fit = fit_temp;  
+		
+	    System.out.println(" >> PARAMETER SET " + fit_temp.getParameter(0) + " " + fit_temp.getParameter(1) + " " + fit_temp.getParameter(2) );
+	}
+	catch( Exception e ){
+	    System.out.println(" ERROR FITTING HISTOGRAM RANGE ");
+	}
+	return fit;	    
+    }
+    
     public static HashMap xyzToUVW( DataEvent tempevent, int temp_pindex ){
 
 	HashMap<Integer, ArrayList<Double> > m_ec_hit_uvw = new HashMap<Integer, ArrayList<Double> >();
